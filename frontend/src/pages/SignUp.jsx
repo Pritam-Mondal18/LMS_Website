@@ -3,11 +3,41 @@ import { useNavigate } from "react-router-dom";
 import { IoEyeOutline, IoEye } from "react-icons/io5";
 import logo from "../assets/logo.jpg";
 import google from "../assets/google.jpg";
+import axios from "axios";
+import { serverUrl } from "../App";
+import { toast } from "react-toastify";
+import {ClipLoader} from "react-spinners";
 
 function SignUp() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student");
+  const [loading, setLoading] = useState(false);
 
+  const handleSignup = async()=>{
+    // API call to backend to create user
+    setLoading(true);
+    try{
+      const result = await axios.post(serverUrl + "/api/auth/signup", {
+        name,
+        email,
+        password,
+        role},
+        {withCredentials: true})
+        console.log(result.data);
+        setLoading(false);
+        navigate("/");
+        toast.success("Signup successful! Please login to continue.");
+    } catch(error){
+      console.error("Error signing up:", error);
+      setLoading(false);
+      toast.error(error.response.data.message || "Signup failed. Please try again."); 
+    }
+
+  }
   return (
     <div className="bg-[#dddbdb] min-h-screen flex items-center justify-center py-10">
       {/* CARD */}
@@ -21,6 +51,7 @@ function SignUp() {
           flex
           overflow-hidden
         "
+        onSubmit={(e)=>e.preventDefault}
       >
         {/* LEFT */}
         <div className="md:w-1/2 w-full flex flex-col items-center justify-center gap-4 px-6 py-10">
@@ -32,10 +63,12 @@ function SignUp() {
           </div>
 
           <div className="flex flex-col gap-1 w-[85%]">
-            <label className="font-medium">Name</label>
+            <label htmlFor="name" className="font-semibold">Name</label>
             <input
               type="text"
               placeholder="Your Name"
+              onChange={(e)=>setName(e.target.value)}
+              value={name}
               className="border border-[#e6e6e6] h-[42px] px-4 rounded-md outline-none focus:border-black"
             />
           </div>
@@ -45,6 +78,8 @@ function SignUp() {
             <input
               type="email"
               placeholder="Your Email"
+              onChange={(e)=>setEmail(e.target.value)}
+              value={email}
               className="border border-[#e6e6e6] h-[42px] px-4 rounded-md outline-none focus:border-black"
             />
           </div>
@@ -54,6 +89,8 @@ function SignUp() {
             <input
               type={show ? "text" : "password"}
               placeholder="Your Password"
+              onChange={(e)=>setPassword(e.target.value)}
+              value={password}
               className="border border-[#e6e6e6] h-[42px] px-4 rounded-md outline-none focus:border-black"
             />
 
@@ -71,16 +108,16 @@ function SignUp() {
           </div>
 
           <div className="flex w-[85%] justify-between">
-            <span className="px-5 py-1.5 border-2 border-[#e6e6e6] rounded-full cursor-pointer hover:border-black">
+            <span className={`px-5 py-1.5 border-2 border-[#e6e6e6] rounded-full cursor-pointer hover:border-black ${role === "student" ? "border-black" : "border-[#646464]"}`} onClick={()=>setRole("student")}>
               Student
             </span>
-            <span className="px-5 py-1.5 border-2 border-[#e6e6e6] rounded-full cursor-pointer hover:border-black">
+            <span className={`px-5 py-1.5 border-2 border-[#e6e6e6] rounded-full cursor-pointer hover:border-black ${role === "educator" ? "border-black" : "border-[#646464"}`} onClick={()=>setRole("educator")}>
               Educator
             </span>
           </div>
 
-          <button className="w-[85%] h-[44px] bg-black text-white rounded-md">
-            SignUp
+          <button className="w-[85%] h-[44px] bg-black text-white rounded-md" disabled={loading} onClick={handleSignup}>
+            {loading ? <ClipLoader size={30} color='white'/>: "SignUp"}
           </button>
 
           <div className="w-[85%] flex items-center gap-3">
