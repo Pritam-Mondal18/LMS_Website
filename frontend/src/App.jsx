@@ -4,9 +4,12 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
+import { get } from "mongoose";
+import getCurrentUser from "./customHooks/getCurrentUser";
 export const serverUrl = "http://localhost:8000"; //8000 for backend
 
 function App() {
+  getCurrentUser() //custom hook to get current user data and store in redux store
   return (
     <>
     <ToastContainer/>
