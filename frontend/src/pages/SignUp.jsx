@@ -7,15 +7,18 @@ import axios from "axios";
 import { serverUrl } from "../App";
 import { toast } from "react-toastify";
 import {ClipLoader} from "react-spinners";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 function SignUp() {
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleSignup = async()=>{
     // API call to backend to create user
@@ -27,7 +30,7 @@ function SignUp() {
         password,
         role},
         {withCredentials: true})
-        console.log(result.data);
+        dispatch(setUserData(result.data)) //storing user data in redux store
         setLoading(false);
         navigate("/");
         toast.success("Signup successful! Please login to continue.");

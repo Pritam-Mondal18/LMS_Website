@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { serverUrl } from "../App";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 function Login() {
   const [show, setShow] = useState(false)
@@ -16,6 +18,7 @@ function Login() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleLogin = async()=>{
     // API call to backend to login user
@@ -23,6 +26,7 @@ function Login() {
     try{
       const result = await axios.post(serverUrl + "/api/auth/login", {email, password}, {withCredentials: true})
       setLoading(false)
+      dispatch(setUserData(result.data)) // storing user data in redux store
       console.log(result.data);
       toast.success("Login successful! Redirecting to dashboard...");
       navigate("/");
