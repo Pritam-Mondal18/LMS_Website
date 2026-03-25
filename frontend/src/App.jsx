@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import getCurrentUser from "./customHooks/getCurrentUser";
+import ForgetPassword from "./pages/ForgetPassword";
 export const serverUrl = "http://localhost:8000"; //8000 for backend
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/signup" element={!userData ? <SignUp />: <Navigate to ={"/"}/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/SignUp" />} />
+        <Route path="/forget" element={userData ? <ForgetPassword /> : <Navigate to="/Login" />} />
       </Routes>
     </>
   );
