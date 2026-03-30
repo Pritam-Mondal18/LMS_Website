@@ -33,6 +33,16 @@ const userSchema = new mongoose.Schema(
         ref: "Course",
       },
     ],
+    resetotp: {
+      type: String,
+    },
+    otpExpires: {
+      type: Date,
+    },
+    isOtpVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
