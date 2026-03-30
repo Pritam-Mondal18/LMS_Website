@@ -16,7 +16,9 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      default: "", // Set default to empty string for Google-authenticated users
+      // required: true,
+      required: false, //--> because for google auth users, password is not required
     },
     role: {
       type: String,
@@ -43,6 +45,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isGoogleUser: {   // ✅ ADD THIS FROM CHATGPT
+    type: Boolean,
+    default: false
+  }
   },
   { timestamps: true }
 );

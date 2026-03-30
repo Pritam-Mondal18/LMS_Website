@@ -11,6 +11,9 @@ import { serverUrl } from "../App";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
+// import { signInWithPopup } from "@firebase/auth";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../utils/firebase";
 
 function Login() {
   const [show, setShow] = useState(false)
@@ -37,6 +40,26 @@ function Login() {
       toast.error(error.response.data.message || "Login failed. Please try again.");
     }
   }
+
+  const googleLogin = async()=>{
+      try{
+        const response = await signInWithPopup (auth, provider)
+        let user = response.user
+        let name = user.displayName
+        let email = user.email
+        // let role = ""
+        let role = "student"
+  
+        const result = await axios.post(serverUrl + "/api/auth/googleauth", {name, email, role}, {withCredentials:true})
+        dispatch(setUserData(result.data))
+        navigate("/");
+        toast.success("Login successful with Google!");
+      }catch(error){
+        console.error("Error login up with Google:", error);
+        // toast.error(error.response.data.message ||"Google login failed. Please try again.");
+        toast.error(error?.response?.data?.message || "Google login failed") // Optional chaining to avoid errors if response or data is undefined
+      }
+    }
 
   return (
     <div className="bg-[#dddbdb] w-screen h-screen flex items-center justify-center">
@@ -96,7 +119,7 @@ function Login() {
             </div>
             <div className="w-[25%] h-[0.5px] bg-[#c4c4c4]"></div>
           </div>
-          <div className="w-[80%] h-[40px] border-2 border-[black] rounded-[5px] flex items-center justify-center">
+          <div className="w-[80%] h-[40px] border-2 border-[black] rounded-[5px] flex items-center justify-center cursor-pointer" onClick={googleLogin}>
             <img src={google} alt="google" className="w-[25px]" />
             <span className="text-[18px] text-grey-500">Google</span>
           </div>

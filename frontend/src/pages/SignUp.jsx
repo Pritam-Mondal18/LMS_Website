@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import {ClipLoader} from "react-spinners";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
+import { linkWithCredential, signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../utils/firebase.js";
 
 function SignUp() {
   const [show, setShow] = useState(false);
@@ -40,6 +42,23 @@ function SignUp() {
       toast.error(error.response.data.message || "Signup failed. Please try again."); 
     }
 
+  }
+
+  const googleSignup = async()=>{
+    try{
+      const response = await signInWithPopup (auth, provider)
+      let user = response.user
+      let name = user.displayName
+      let email = user.email
+
+      const result = await axios.post(serverUrl + "/api/auth/googleauth", {name, email, role}, {withCredentials:true})
+      dispatch(setUserData(result.data))
+      navigate("/");
+      toast.success("Signup successful with Google! Please login to continue.");
+    }catch(error){
+      console.error("Error signing up with Google:", error);
+      toast.error(error.response.data.message ||"Google signup failed. Please try again.");
+    }
   }
   return (
     <div className="bg-[#dddbdb] min-h-screen flex items-center justify-center py-10">
@@ -129,9 +148,9 @@ function SignUp() {
             <div className="flex-1 h-[1px] bg-[#d0d0d0]" />
           </div>
 
-          <div className="w-[85%] h-[44px] border-2 border-black rounded-md flex items-center justify-center gap-3">
+          <div className="w-[85%] h-[44px] border-2 border-black rounded-md flex items-center justify-center gap-3 cursor-pointer" onClick={googleSignup}>
             <img src={google} alt="google" className="w-5" />
-            <span>Google</span>
+            <span className="text-[18px] text-gray-500">Google</span>
           </div>
 
           <div className="text-[#6f6f6f] text-sm">
