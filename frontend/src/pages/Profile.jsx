@@ -14,7 +14,7 @@ function Profile () {
           {userData?.photoUrl ?
             <img src={userData.photoUrl} className='w-24 h-24 rounded-full object-cover border-4 border-[black]' alt="User Photo" /> : 
             <div className='w-24 h-24 rounded-full text-white bg-black text-[30px] flex items-center justify-center border-2 border-white'>
-              {userData?.name.slice(0, 1).toUpperCase()}
+              {userData?.name?.slice(0, 1)?.toUpperCase()|| "?"}
             </div>}
             <h2 className='text-xl font-bold mt-4 text-gray-800'>{userData?.name}</h2>
             <p className='text-sm text-gray-500'>{userData.role}</p>
@@ -34,7 +34,7 @@ function Profile () {
           </div>
         </div>
         <div className='mt-6 flex justify-center gap-4'>
-          <button className='px-5 py-2 rounded bg-[black] text-white active:bg-[#4b4b4b] cursor-pointer transition'>Edit Profile</button>
+          <button className='px-5 py-2 rounded bg-[black] text-white active:bg-[#4b4b4b] cursor-pointer transition' onClick={()=>navigate("/editprofile")}>Edit Profile</button>
         </div>
       </div>
       </div> 
