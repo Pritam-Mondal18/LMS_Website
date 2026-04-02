@@ -5,6 +5,7 @@ import ai1 from "../assets/SearchAi.png"
 import Nav from "../component/Nav";
 import home from "../assets/home1.jpg"
 import Logos from "../component/Logos";
+import ExploreCourses from "../component/ExploreCourses";
 
 function Home() {
   return (
@@ -27,6 +28,7 @@ function Home() {
       </div>
     </div>
     <Logos/>
+    <ExploreCourses/>
   </div>
   )
 }
