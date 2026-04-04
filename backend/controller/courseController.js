@@ -34,7 +34,7 @@ export const getPublishedCourses = async (req,res) => {
 
 export const getCreatorCourses = async(req,res) => {
     try{
-        const userId = req.user._id;
+        const userId = req.userId._id;
         const courses = await Course.find({creator:userId})
         if(!courses){
             return res.status(404).json({message:"No courses are found for this creator"})

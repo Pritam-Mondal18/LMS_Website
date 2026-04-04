@@ -15,11 +15,13 @@ import Dashboard from "./pages/Educator/Dashboard";
 import Courses from "./pages/Educator/Courses";
 import CreateCourse from "./pages/Educator/CreateCourses";
 import useGetCurrentUser from "./customHooks/getCurrentUser";
+import useGetCreatorCourse from "./customHooks/getCreatorCourse";
 export const serverUrl = "http://localhost:8000"; //8000 for backend
 
 function App() {
 
   useGetCurrentUser() //custom hook to get current user data and store in redux store
+  useGetCreatorCourse() // custom hook to get creator course data and store in redux store
   const {userData,loading } = useSelector((state) => state.user)
   if (loading) return <p>Loading...</p>; // Show loading state while fetching user data
   return (

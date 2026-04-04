@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import img from "../../assets/empty.jpg"
+import { useSelector } from "react-redux";
 
 function Courses() {
     const navigate = useNavigate()
+    const {creatorCourseData} = useSelector((state)=>state.course);
     return(
         <div className='flex min-h-screen bg-gray-100'>
             <div className='w-[100%] min-h-screen p-4 sm:p-6 bg-gray-100'>
@@ -28,36 +30,42 @@ function Courses() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className='border-b hover:bg-gray-50 transition duration-200'>
+                        {Array.isArray(creatorCourseData) && creatorCourseData.map((course,index)=>(
+                        <tr key={index} className='border-b hover:bg-gray-50 transition duration-200'>
                             <td className='py-3 px-4 flex items-center gap-4'>
-                                <img src={img} alt='' className='w-25 h-14 object-cover rounded-md'/>
-                                <span>Title</span>
+                                {course?.thumbnail?<img src={course?.thumbnail} alt='' className='w-25 h-14 object-cover rounded-md'/>:<img src={img} alt='' className='w-25 h-14 object-cover rounded-md'/>}
+                                <span>{course?.title}</span>
                                 </td>
-                            <td className='px-4 py-3'>₹ NA</td>
+                            {course?.price ? <td className='px-4 py-3'>₹{course?.price}</td>:<td className='px-4 py-3'>₹ NA</td>}
                             <td className='px-4 py-3'>
-                                <span className='px-3 py-1 rounded-full text-xs bg-red-100 text-red-600'>
-                                    Draft
+                                <span className={`px-3 py-1 rounded-full text-xs ${course?.isPublished?"bg-green-100 text-green-600": "bg-red-100 text-red-600"}`}>
+                                    {course?.isPublished ? "Published" : "Draft"}
                                     </span>
                                     </td>
                             <td className='px-4 py-3'><FaEdit className='test-gray-600 hover:text-blue-600 cursor-pointer'/></td>
                         </tr>
+                        ))}
                     </tbody>
                 </table>
                 <p className='text-center text-sm text-gray-400 mt-6'>A list of your recent courses.</p>
                 </div>
             {/* for small screen table */}
             <div className='md:hidden space-y-4'>
-                <div className='bg-white rounded-lg shadow p-4 flex flex-col gap-3'>
+                {Array.isArray(creatorCourseData) && creatorCourseData.map((course,index)=>(
+                <div key={index} className='bg-white rounded-lg shadow p-4 flex flex-col gap-3'>
                     <div className='flex gap-4 items-center'>
-                        <img src={img} alt='' className='w-16 h-16 object-cover rounded-md' />
+                        {course?.thumbnail?<img src={course?.thumbnail} alt='' className='w-16 h-16 object-cover rounded-md'/>:<img src={img} alt='' className='w-16 h-16 object-cover rounded-md' />}
                         <div className='flex-1'>
-                            <h2 className='font-medium text-sm'>Title</h2>
-                            <p className='text-gray-600 text-xs mt-1'>₹ NA</p>
+                            <h2 className='font-medium text-sm'>{course?.title}</h2>
+                            <p className='text-gray-600 text-xs mt-1'>{course?.price ? `₹${course?.price}` : '₹ NA'}</p>
                         </div>
                         <FaEdit className='test-gray-600 hover:text-blue-600 cursor-pointer'/>
                     </div>
-                    <span className='w-fit px-3 py-1 text-xs rounded-full bg-red-100 text-red-600'>Draft</span>
+                    <span className={`w-fit px-3 py-1 text-xs rounded-full ${course?.isPublished?"bg-green-100 text-green-600": "bg-red-100 text-red-600"}`}>
+                        {course?.isPublished ? "Published" : "Draft"}
+                    </span>
                 </div>
+                ))}
                 <p className='text-center text-sm text-gray-400 mt-4'>A list of your recent Courses.</p>
             </div>
             </div>
