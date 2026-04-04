@@ -6,14 +6,22 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
-import getCurrentUser from "./customHooks/getCurrentUser";
+// import { useEffect } from "react";
+import { useEffect } from "react";
+// import getCurrentUser from "./customHooks/getCurrentUser";
 import ForgetPassword from "./pages/ForgetPassword";
 import EditProfile from "./pages/EditProfile";
+import Dashboard from "./pages/Educator/Dashboard";
+import Courses from "./pages/Educator/Courses";
+import CreateCourse from "./pages/Educator/CreateCourses";
+import useGetCurrentUser from "./customHooks/getCurrentUser";
 export const serverUrl = "http://localhost:8000"; //8000 for backend
 
 function App() {
-  getCurrentUser() //custom hook to get current user data and store in redux store
-  const {userData} = useSelector((state) => state.user)
+
+  useGetCurrentUser() //custom hook to get current user data and store in redux store
+  const {userData,loading } = useSelector((state) => state.user)
+  if (loading) return <p>Loading...</p>; // Show loading state while fetching user data
   return (
     <>
     <ToastContainer/>
@@ -24,6 +32,9 @@ function App() {
         <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/SignUp" />} />
         <Route path="/forget" element={userData ? <ForgetPassword /> : <Navigate to="/Login" />} />
         <Route path="/editprofile" element={userData ? <EditProfile /> : <Navigate to="/Login" />} />
+        <Route path="/dashboard" element={userData ?.role === "educator" ? <Dashboard /> : <Navigate to="/Login" />} />
+        <Route path="/courses" element={userData ?.role === "educator" ? <Courses /> : <Navigate to="/Login" />} />
+        <Route path="/createcourse" element={userData ?.role === "educator" ? <CreateCourse /> : <Navigate to="/Login" />} />
       </Routes>
     </>
   );

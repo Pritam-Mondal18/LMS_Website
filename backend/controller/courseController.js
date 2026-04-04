@@ -1,5 +1,6 @@
-import Course from "../models/courseModel.js";
+import Course from "../model/courseModel.js";
 
+//for course
 export const createCourse = async (req,res) => {
     try{
         const{title,category} = req.body;
@@ -9,8 +10,8 @@ export const createCourse = async (req,res) => {
         }
         const course = await Course.create({
             title,
-            description,
-            creator:req.user._id,
+            category,
+            creator:req.userId._id,
 
         })
         return res.status(201).json({message:"Course created successfully",course})

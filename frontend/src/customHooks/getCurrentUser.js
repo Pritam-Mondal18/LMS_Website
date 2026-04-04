@@ -5,7 +5,7 @@ import { serverUrl } from '../App'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../redux/userSlice'
 
-const getCurrentUser = () => {
+const useGetCurrentUser = () => {
     const dispatch = useDispatch()
   useEffect(() => {
     const fetchUser = async () => {
@@ -21,4 +21,4 @@ const getCurrentUser = () => {
   },[])
 }
 
-export default getCurrentUser
+export default useGetCurrentUser
