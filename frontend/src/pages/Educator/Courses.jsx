@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import img from "../../assets/empty.jpg"
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { serverUrl } from "../../App";
+import { useDispatch } from "react-redux";
+import { setCreatorCourseData } from "../../redux/courseSlice";
 
 function Courses() {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const {userData} = useSelector((state)=>state.user);
     const {creatorCourseData} = useSelector((state)=>state.course);
+    
+        useEffect(()=>{
+            const creatorCourses = async()=>{
+                try{
+                    const result = await axios.get(serverUrl + "/api/course/getcreator",{withCredentials:true})
+                    console.log(result.data)
+                    dispatch(setCreatorCourseData(result.data.courses));
+                }catch(error){
+                    console.log(error)
+                }
+                    
+            }
+            if (userData) {
+                creatorCourses(); // ✅ only call when user exists
+            }
+        },[userData])
     return(
         <div className='flex min-h-screen bg-gray-100'>
             <div className='w-[100%] min-h-screen p-4 sm:p-6 bg-gray-100'>
@@ -42,7 +64,7 @@ function Courses() {
                                     {course?.isPublished ? "Published" : "Draft"}
                                     </span>
                                     </td>
-                            <td className='px-4 py-3'><FaEdit className='test-gray-600 hover:text-blue-600 cursor-pointer'/></td>
+                            <td className='px-4 py-3'><FaEdit className='test-gray-600 hover:text-blue-600 cursor-pointer' onClick={()=>navigate(`/editcourse/${course?._id}`)}/></td>
                         </tr>
                         ))}
                     </tbody>
@@ -59,7 +81,7 @@ function Courses() {
                             <h2 className='font-medium text-sm'>{course?.title}</h2>
                             <p className='text-gray-600 text-xs mt-1'>{course?.price ? `₹${course?.price}` : '₹ NA'}</p>
                         </div>
-                        <FaEdit className='test-gray-600 hover:text-blue-600 cursor-pointer'/>
+                        <FaEdit className='test-gray-600 hover:text-blue-600 cursor-pointer' onClick={()=>navigate(`/editcourse/${course?._id}`)}/>
                     </div>
                     <span className={`w-fit px-3 py-1 text-xs rounded-full ${course?.isPublished?"bg-green-100 text-green-600": "bg-red-100 text-red-600"}`}>
                         {course?.isPublished ? "Published" : "Draft"}
