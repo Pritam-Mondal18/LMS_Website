@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import {FaArrowLeftLong} from 'react-icons/fa6';
 import {useNavigate} from 'react-router-dom';
 import empty from '../../assets/empty.jpg';
+import {FaEdit} from 'react-icons/fa'
 
 function EditCourse() {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ function EditCourse() {
                     {!isPublished?<button className='bg-green-100 text-green-600 px-4 py-2 rounded-md border-1 cursor-pointer' onClick={() => setIsPublished(prev => !prev)}>Click to Publish</button>:<button className='bg-pink-100 text-pink-600 px-4 py-2 rounded-md border-1 cursor-pointer' onClick={() => setIsPublished(prev => !prev)}>Click to UnPublish</button>}
                     <button className='bg-red-100 text-red-600 px-4 py-2 rounded-md border-1 cursor-pointer'>Remove Course</button>
                 </div>
-                <form className='space-y-6'>
+                <form className='space-y-6' onSubmit={(e)=>e.preventDefault()}>
                     <div>
                         <label htmlFor="title" className='block text-sm font-medium text-gray-700 mb-1'>Title</label>
                         <input id='title' type="text" placeholder='Course Title' className='w-full border px-4 py-2 rounded-md' />
@@ -68,16 +69,23 @@ function EditCourse() {
                             <label htmlFor="price" className='block text-sm font-medium text-gray-700 mb-1'>course Price(INR)</label>
                             <input type="number" id="price" className='w-full border px-4 py-2 rounded-md' placeholder='₹'/>
                         </div>
-                        <div>
-                            <label htmlFor="thumbnail" className='block text-sm font-medium text-gray-700 mb-1'>Course Thumbnail</label>
-                            <input type="file" id="thumbnail" hidden ref={thumb} accept='image/*'/>
-                        </div>
-                        <div className='relative w-[300px] h-[170px]'>
-                            <img src={empty} alt='' className='w-[100%] h-[100%] border-black rounded-[5px]' onClick={()=>thumb.current.onClick}/>
-                        </div>
+                        
+                        
+                    </div>
+                    <div>
+                        <label htmlFor="thumbnail" className='block text-sm font-medium text-gray-700 mb-1'>Course Thumbnail</label>
+                        <input type="file" id="thumbnail" hidden ref={thumb} accept='image/*'/>
+                    </div>
+                    <div className='relative w-[300px] h-[170px]'>
+                        <img src={empty} alt='' className='w-[100%] h-[100%] border-black rounded-[5px] cursor-pointer' onClick={()=>thumb.current.click()}/>
+                        <FaEdit className='w-[20px] h-[20px] absolute top-2 right-2' onClick={()=>thumb.current.click()}/>
                     </div>
 
-                    <button>efb</button>
+                    <div className='flex items-center justify-start gap-[15px]'>
+                        <button className='bg-[#3e3e3e] hover:bg-green-600 text-white border-1 border-balck cursor-pointer px-7 py-2 rounded-md' onClick={()=>navigate("/courses")}>Save</button>
+                        <button className='bg-[#e9e8e8] hover:bg-red-300 text-black border-1 border-balck cursor-pointer px-7 py-2 rounded-md' onClick={()=>navigate("/courses")}>Cancel</button>
+                        
+                    </div>
 
 
                 </form>

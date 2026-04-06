@@ -1,4 +1,5 @@
 import Course from "../model/courseModel.js";
+import uploadOnCloudinary from "../config/cloudinary.js";
 
 //for course
 export const createCourse = async (req,res) => {
@@ -23,7 +24,7 @@ export const createCourse = async (req,res) => {
 export const getPublishedCourses = async (req,res) => {
     try{
         const courses = await Course.find({isPublished:true})
-        if(!courses){
+        if(!courses || courses.length === 0){
             return res.status(404).json({message:"No courses are found"})
         }
         return res.status(200).json({courses})
@@ -52,7 +53,9 @@ export const editCourse = async(req,res) => {
         const {title,subTitle,description,category,level,isPublished,price,} = req.body;
         let thumbnail 
         if(req.file){
-            thumbnail = await uploadOnCloudinary(req.file.path)
+            // thumbnail = await uploadOnCloudinary(req.file.path)
+            const uploaded = await uploadOnCloudinary(req.file.path);
+            thumbnail = uploaded.secure_url;
         }
         let course = await Course.findById(courseId)
         if(!course){
