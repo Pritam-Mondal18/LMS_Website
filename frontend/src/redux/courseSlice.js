@@ -4,7 +4,7 @@ const courseSlice = createSlice({
     name: "course",
     initialState: {
         creatorCourseData:[], // to store the course data created by the creator to show in courses page
-        courseData:null,
+        courseData:[],
         loading: true // to check whether the creator course data is being fetched or not, to avoid rendering the components before getting creator course data
     },
     reducers: {

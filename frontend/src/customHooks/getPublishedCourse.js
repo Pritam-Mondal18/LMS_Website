@@ -10,8 +10,8 @@ const useGetPublishedCourse = () => {
     useEffect(()=>{
         const getCourseData = async () => {
             try{
-                const result = await axios.get(serverUrl+"/api/course/getpublished",{withCredentials:true})
-                dispatch(setCourseData(result.data))
+                const result = await axios.get(serverUrl+"/api/course/published",{withCredentials:true})
+                dispatch(setCourseData(result.data.courses))
                 console.log(result.data)
             }catch(error){
                 console.log(error)

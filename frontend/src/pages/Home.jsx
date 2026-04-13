@@ -6,6 +6,7 @@ import Nav from "../component/Nav";
 import home from "../assets/home.png"
 import Logos from "../component/Logos";
 import ExploreCourses from "../component/ExploreCourses";
+import CardPage from "../component/CardPage";
 
 function Home() {
   return (
@@ -29,6 +30,7 @@ function Home() {
     </div>
     <Logos/>
     <ExploreCourses/>
+    <CardPage/>
   </div>
   )
 }

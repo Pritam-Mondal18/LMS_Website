@@ -7,6 +7,8 @@ import {serverUrl} from '../../App'
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCourseData } from '../../redux/courseSlice';
 
 function EditCourse() {
     const navigate = useNavigate();
@@ -24,6 +26,8 @@ function EditCourse() {
     const [backendImage,setBackendImage] = useState(null)
     const [loading,setLoading] = useState(false)
     const [loading1,setLoading1] = useState(false)
+    const {courseData} = useSelector(state=>state.course)
+    const dispatch = useDispatch()
 
     const handleThumbnail = (e)=>{
         const file = e.target.files[0]
@@ -49,7 +53,8 @@ function EditCourse() {
             setCategory(selectCourse.category || "")
             setLevel(selectCourse.level || "")
             setPrice(selectCourse.price || "")
-            setFrontendImage(selectCourse.thumbnail || empty)
+            // setFrontendImage(selectCourse.thumbnail || empty)
+            setFrontendImage(selectCourse.thumbnail ? `${serverUrl}/${selectCourse.thumbnail}` : empty)
             setIsPublished(selectCourse?.isPublished)
 
         }
@@ -67,11 +72,27 @@ function EditCourse() {
         formData.append("category",category)
         formData.append("level",level)
         formData.append("price",price)
-        formData.append("thumbnail",backendImage)
+        // formData.append("thumbnail",backendImage)
+        if (backendImage) {
+            formData.append("thumbnail", backendImage)
+        }
         formData.append("isPublished",isPublished)
         try{
             const result = await axios.post(serverUrl+`/api/course/editcourse/${courseId}`,formData,{withCredentials:true})
             console.log(result.data)
+
+            const updateData = result.data
+            if(updateData.isPublished){
+                const updateCourses = courseData.map(c => c._id === courseId ? updateData : c)
+                if(!courseData.some(c => c._id === courseId)){
+                    updateCourses.push(updateData)
+                }
+                dispatch(setCourseData(updateCourses))
+            }
+            else{
+                const filterCourses = courseData.filter(c=>c._id !== courseId)
+                dispatch(setCourseData(filterCourses))
+            }
             setLoading(false)
             navigate("/courses")
             toast.success("Course Updated")
@@ -87,6 +108,8 @@ function EditCourse() {
         try{
             const result = await axios.delete(serverUrl+`/api/course/remove/${courseId}`,{withCredentials:true})
             console.log(result.data)
+            const filterCourses = courseData.filter(c=>c._id !== courseId)
+            dispatch(setCourseData(filterCourses))
             setLoading1(false)
             toast.success("Course Removed")
             navigate("/courses")
@@ -170,8 +193,8 @@ function EditCourse() {
                     </div>
 
                     <div className='flex items-center justify-start gap-[15px]'>
-                        <button className='bg-[#3e3e3e] hover:bg-green-600 text-white border-1 border-balck cursor-pointer px-7 py-2 rounded-md' onClick={handleEditCourse}>{loading?<ClipLoader/>:"Save"}</button>
-                        <button className='bg-[#e9e8e8] hover:bg-red-300 text-black border-1 border-balck cursor-pointer px-7 py-2 rounded-md' onClick={()=>navigate("/courses")}>Cancel</button>
+                        <button className='bg-[#3e3e3e] hover:bg-green-600 text-white border-1 border-balck cursor-pointer px-7 py-2 rounded-md' type='button' onClick={handleEditCourse}>{loading?<ClipLoader/>:"Save"}</button>
+                        <button className='bg-[#e9e8e8] hover:bg-red-300 text-black border-1 border-balck cursor-pointer px-7 py-2 rounded-md' type='button' onClick={()=>navigate("/courses")}>Cancel</button>
                         
                     </div>
                 </form>

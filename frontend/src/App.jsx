@@ -26,14 +26,17 @@ function App() {
   useGetCreatorCourse() // custom hook to get creator course data and store in redux store
   useGetPublishedCourse()
   const {userData,loading } = useSelector((state) => state.user)
-  if (loading) return <p>Loading...</p>; // Show loading state while fetching user data
+  if (loading) {
+    return <p>Loading...</p>; // Show loading state while fetching user data
+  }
   return (
     <>
     <ToastContainer/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={!userData ? <SignUp />: <Navigate to ={"/"}/>} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={!userData ? <Login /> : <Navigate to="/" />} />
         <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/SignUp" />} />
         <Route path="/forget" element={userData ? <ForgetPassword /> : <Navigate to="/Login" />} />
         <Route path="/editprofile" element={userData ? <EditProfile /> : <Navigate to="/Login" />} />
