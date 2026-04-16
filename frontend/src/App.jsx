@@ -18,6 +18,7 @@ import useGetCurrentUser from "./customHooks/getCurrentUser";
 import useGetCreatorCourse from "./customHooks/getCreatorCourse";
 import useGetPublishedCourse from "./customHooks/getPublishedCourse";
 import EditCourse from "./pages/Educator/EditCourse";
+import AllCourses from "./pages/AllCourses";
 export const serverUrl = "http://localhost:8000"; //8000 for backend
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
         <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/SignUp" />} />
         <Route path="/forget" element={userData ? <ForgetPassword /> : <Navigate to="/Login" />} />
         <Route path="/editprofile" element={userData ? <EditProfile /> : <Navigate to="/Login" />} />
+        <Route path="/allcourses" element={userData ? <AllCourses /> : <Navigate to="/Login" />} />
         <Route path="/dashboard" element={userData ?.role === "educator" ? <Dashboard /> : <Navigate to="/Login" />} />
         <Route path="/courses" element={userData ?.role === "educator" ? <Courses /> : <Navigate to="/Login" />} />
         <Route path="/createcourse" element={userData ?.role === "educator" ? <CreateCourse /> : <Navigate to="/Login" />} />

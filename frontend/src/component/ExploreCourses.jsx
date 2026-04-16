@@ -7,8 +7,10 @@ import phy from "../assets/phy.svg"
 import bio from "../assets/bio.svg"
 import com from "../assets/com.svg"
 import arts from "../assets/arts.svg"
+import { useNavigate } from 'react-router-dom';
 
 function ExploreCourses() {
+    const navigate = useNavigate()
     return (
         <div className='w-full min-h-[60vh] flex flex-col lg:flex-row items-center justify-center gap-10 px-[30px] py-[40px]'>
             {/* left/top div */}
@@ -16,7 +18,7 @@ function ExploreCourses() {
                 <span className='text-[32px] font-semibold leading-tight'>Explore Courses</span>
                 <span className='text-[32px] font-semibold leading-tight'>Our Courses</span>
                 <p className='text-[16px] text-gray-600'>Discover a wide range of courses to enhance your skills and advance your career.</p>
-                <button className="px-[20px] py-[10px] bg-black text-white rounded-[10px] text-[16px] flex items-center gap-2 mt-[20px] hover:bg-gray-800 transition cursor-pointer">Explore Courses <SiViaplay className="w-[30px] h-[30px] fill-white cursor-pointer" /></button>
+                <button className="px-[20px] py-[10px] bg-black text-white rounded-[10px] text-[16px] flex items-center gap-2 mt-[20px] hover:bg-gray-800 transition cursor-pointer" onClick={()=>navigate("/allcourses")}>Explore Courses <SiViaplay className="w-[30px] h-[30px] fill-white cursor-pointer" /></button>
                 </div>
             {/* right/bottom div */}
             <div className='w-full lg:w-[500px] flex items-center justify-center gap-[25px] flex-wrap'>
