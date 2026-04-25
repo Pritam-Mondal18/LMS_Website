@@ -37,16 +37,19 @@ function AllCourses(){
         applyFilter()
     },[category,courseData])
     return (
-        <div className="flex min-h-screen bg-gray-50">
+        <div className="flex min-h-screen bg-gray-50 ">
             <Nav/>
 
             {/* sidebar */}
             {/* <button onClick={() => setShowSidebar(true)}className="md:hidden fixed top-20 left-4 z-[60] bg-black text-white px-4 py-2 rounded shadow-lg">Filters</button> */}
-            <button className="fixed top-20 left-4 z-[80] bg-white text-black px-3 py-1 rounded md:hidden border-2 border-black" onClick={() => setShowSidebar(prev =>!prev)}>{showSidebar ? "Hide" : "Show"}Filters</button>
-            {showSidebar && (<div onClick={() => setShowSidebar(false)} className="fixed inset-0 bg-black/40 z-40 md:hidden "/>)}
-            <aside className={`w-[280px] sm:w-[300px] h-screen overflow-y-auto bg-black fixed top-0 left-0 p-6 py-[130px] border-r border-gray-200 shadow-md transition-transform duration-300 ease-in-out z-[70]  ${showSidebar ? "translate-x-0" : "-translate-x-full"} md:block md:translate-x-0`}>
+            {/* <button className={`fixed top-20 left-4 ${showSidebar ? "z-[210]" : "z-[50]"} bg-white text-black px-3 py-1 rounded md:hidden border-2 border-black`} onClick={() => setShowSidebar(prev =>!prev)}>{showSidebar ? "Hide" : "Show"}Filters</button> */}
+            <button className={`fixed top-20 left-4 z-[50] bg-white text-black px-3 py-1 rounded md:hidden border-2 border-black`} onClick={() => setShowSidebar(true)}>Show Filters</button>
+            {/* {!showHam && (<button className={`fixed top-20 left-4 ${showSidebar ? "z-[210]" : "z-[50]"} bg-white text-black px-3 py-1 rounded md:hidden border-2 border-black`}onClick={() => setShowSidebar(prev => !prev)}>{showSidebar ? "Hide" : "Show"} Filters</button>)} */}
+            {showSidebar && (<div onClick={() => setShowSidebar(false)} className="fixed inset-0 bg-black/40 z-[190] md:hidden "/>)}
+            <aside className={`w-[280px] sm:w-[300px]  overflow-y-auto bg-black fixed top-0 left-0 p-6 py-[130px] border-r border-gray-200 shadow-md transition-transform duration-300 ease-in-out z-[200]  ${showSidebar ? "translate-x-0" : "-translate-x-full"} md:block md:translate-x-0`}>
                 {/* {showSidebar && (<div onClick={() => setShowSidebar(false)} className="fixed inset-0 bg-black/40 z-40 md:hidden pointer-events-auto"/>)} */}
                 {/* <button onClick={() => setShowSidebar(false)}className="md:hidden text-white mb-4">Close ✖</button> */}
+                <div className="md:hidden absolute top-20 left-4"><button className="bg-white text-black px-3 py-1 rounded border-2 border-black" onClick={() => setShowSidebar(false)}>Hide Filters</button></div>
                 <h2 className="text-xl font-bold flex items-center justify-center gap-2 text-gray-50 mb-6">
                     <FaArrowLeftLong className="cursor-pointer" onClick={()=>navigate("/")}/>Filter by Category</h2>
 

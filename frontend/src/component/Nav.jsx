@@ -32,7 +32,7 @@ function Nav() {
     }
     return (
         <div>
-            <div className="w-[100%] h-[70px] fixed top-0 px-[20px] py-[10px] flex items-center justify-between bg-[#00000047] z-10">
+            <div className="w-[100%] h-[70px] fixed top-0 px-[20px] py-[10px] flex items-center justify-between bg-[#00000047] z-[300]">
                 <div className="lg:w-[20%] w-[40%] lg:pl-[50px]">
                     <img src={logo} alt="logo" className="w-[60px] rounded-[5px] border-2 border-white " />
                 </div>
@@ -53,7 +53,8 @@ function Nav() {
                 </div>
                 <GiHamburgerMenu className="w-[35px] h-[35px] lg:hidden text-white cursor-pointer" onClick={()=>setShowHam(prev=>!prev)}/>
 
-                <div className={`fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#000000d6] flex items-center justify-center flex-col gap-5 z-10 lg:hidden ${showHam ? "translate-x-[0] transition duration-600" : "translate-x-[-100%] transition duration-600"}`}>
+                {/* <div className={`fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#000000d6] flex items-center justify-center flex-col gap-5 z-[100] lg:hidden ${showHam ? "translate-x-[0] transition duration-600" : "translate-x-[-100%] transition duration-600"}`}> */}
+                {showHam && (<div className="fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#000000d6] flex items-center justify-center flex-col gap-5 z-[300] lg:hidden transition-all duration-300">
                     <ImCross className="w-[35px] h-[35px] fill-white absolute top-5 right-[4%] cursor-pointer" onClick={()=>setShowHam(prev=>!prev)}/>
                         {/* {!userData &&<IoPersonCircle className="w-[50px] h-[50px] text-white cursor-pointer" />}
                         {userData?.photoUrl ?<img src={userData?.photoUrl} alt="Profile" className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer"/>:  <div className="w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer" >
@@ -65,7 +66,7 @@ function Nav() {
                         {userData?.role==='educator' && <div className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white text-white bg-[black] rounded-[10px] text-[18px] font-light cursor-pointer" onClick={()=>navigate("/dashboard")}>Dashboard</div>}
                         {!userData ?<span className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white text-white bg-[black] rounded-[10px] text-[18px] font-light cursor-pointer" onClick={()=>navigate("/login")}>login</span>:
                         <span className="w-[200px] h-[65px] flex items-center justify-center border-2 border-white text-white bg-[black] rounded-[10px] text-[18px] font-light cursor-pointer" onClick={handleLogout}>logout</span>}
-                    </div>
+                    </div>)}
             </div>
         </div>
     )
