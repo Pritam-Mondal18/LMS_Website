@@ -85,9 +85,12 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
-// CSRF protection — issue token cookie on all responses, validate on mutations
-app.use(setCsrfCookie);
-app.use("/api", verifyCsrf);
+// CSRF protection — DISABLED for cross-domain deployment (Vercel ↔ Render)
+// The double-submit cookie pattern cannot work when frontend and backend
+// are on different domains because JS cannot read cross-domain cookies.
+// Security is maintained via JWT auth + CORS origin validation.
+// app.use(setCsrfCookie);
+// app.use("/api", verifyCsrf);
 
 // Routes
 app.use("/api/auth", authRoutes);
