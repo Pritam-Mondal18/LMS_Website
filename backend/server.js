@@ -29,6 +29,9 @@ const path = require("path");
 
 const app = express();
 
+// Trust reverse proxy headers from Render/Cloudflare
+app.set("trust proxy", 1);
+
 // app.use(express.static("public"))
 
 // Connect to DB
