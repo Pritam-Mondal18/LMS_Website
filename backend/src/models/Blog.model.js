@@ -32,7 +32,6 @@ blogSchema.pre("save", function (next) {
   next();
 });
 
-blogSchema.index({ slug: 1 }, { unique: true });
 blogSchema.index({ isPublished: 1, createdAt: -1 });
 blogSchema.index({ category: 1, isPublished: 1 });
 

@@ -37,27 +37,20 @@ connectDB();
 // CORS
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL || "http://localhost:5173"],
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps, curl, postman)
+      if (!origin) return callback(null, true);
+      return callback(null, true);
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-Token"],
   })
 );
 
 // Security middleware
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://checkout.razorpay.com", "https://meet.jit.si", "https://*.meet.jit.si"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https:", "blob:"],
-      connectSrc: ["'self'", process.env.CLIENT_URL || "http://localhost:5173", "https://meet.jit.si", "https://*.meet.jit.si", "wss://meet.jit.si", "wss://*.meet.jit.si"],
-      frameSrc: ["'self'", "https://checkout.razorpay.com", "https://*.youtube.com", "https://youtube.com", "https://*.vimeo.com", "https://vimeo.com", "https://meet.jit.si", "https://*.meet.jit.si"],
-      mediaSrc: ["'self'", "http:", "https:", "blob:", "data:"],
-    },
-  },
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: false,
 }));

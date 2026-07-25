@@ -92,7 +92,6 @@ courseSchema.pre("save", function (next) {
 });
 
 // Indexes for query performance
-courseSchema.index({ slug: 1 }, { unique: true });
 courseSchema.index({ category: 1, isPublished: 1, isApproved: 1 });
 courseSchema.index({ instructor: 1 });
 courseSchema.index({ isPublished: 1, isApproved: 1, isFeatured: 1 });
