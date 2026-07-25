@@ -64,18 +64,20 @@ app.use(xssClean());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === "development" ? 10000 : 100,
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: { success: false, message: "Too many requests from this IP, please try again later." },
 });
 app.use("/api", limiter);
 
 const authLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: process.env.NODE_ENV === "development" ? 100 : 10,
+  max: 50,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: { success: false, message: "Too many auth attempts, please try again in an hour." },
 });
 app.use("/api/auth", authLimiter);
