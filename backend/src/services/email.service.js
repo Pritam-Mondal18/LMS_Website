@@ -1,3 +1,5 @@
+const nodemailer = require("nodemailer");
+
 const userEmail = (process.env.USER_EMAIL || "pritammondal18012003@gmail.com").replace(/["'\s]/g, "");
 const userPass = (process.env.USER_PASSWORD || "vvcoxanvkrlcawuj").replace(/["'\s]/g, "");
 
