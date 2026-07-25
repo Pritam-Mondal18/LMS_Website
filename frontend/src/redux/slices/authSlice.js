@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../../services/api';
+import api, { setTokens, clearTokens } from '../../services/api';
 
 // Async Thunks
 export const loginUser = createAsyncThunk(
@@ -8,6 +8,8 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await api.post('/auth/login', credentials);
       if (response.data.success) {
+        // Store tokens in localStorage for cross-domain auth
+        setTokens(response.data.accessToken, response.data.refreshToken);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         return response.data;
       }
@@ -36,6 +38,8 @@ export const verifyOTP = createAsyncThunk(
     try {
       const response = await api.post('/auth/verify-otp', { userId, otp });
       if (response.data.success) {
+        // Store tokens after OTP verification
+        setTokens(response.data.accessToken, response.data.refreshToken);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         return response.data;
       }
@@ -54,7 +58,7 @@ export const logoutUser = createAsyncThunk(
     } catch {
       // Still log out locally even if api call fails
     } finally {
-      localStorage.removeItem('user');
+      clearTokens();
     }
   }
 );
