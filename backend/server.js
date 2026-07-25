@@ -40,7 +40,8 @@ app.use(
     origin: function (origin, callback) {
       // allow requests with no origin (like mobile apps, curl, postman)
       if (!origin) return callback(null, true);
-      return callback(null, true);
+      // Return origin string to produce valid Access-Control-Allow-Origin header with credentials
+      return callback(null, origin);
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
