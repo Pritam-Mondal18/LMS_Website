@@ -380,19 +380,47 @@ const contactInquiry = async (req, res) => {
 </body>
 </html>`;
 
+  const confirmHtml = `
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#090040;font-family:Arial,sans-serif">
+  <div style="max-width:600px;margin:40px auto;background:linear-gradient(135deg,#0F0052,#1a0080);border-radius:16px;overflow:hidden">
+    <div style="background:linear-gradient(135deg,#471396,#B13BFF);padding:40px;text-align:center">
+      <h1 style="color:#fff;margin:0;font-size:26px">✅ Inquiry Received!</h1>
+    </div>
+    <div style="padding:40px">
+      <h2 style="color:#fff;margin-top:0">Hello, ${name}!</h2>
+      <p style="color:rgba(255,255,255,0.7);line-height:1.7">
+        Thank you for reaching out to <strong style="color:#FF2E93">Sumit Chakraborty Academy</strong>.
+        We have received your inquiry and one of our education counselors will get back to you within <strong style="color:#B13BFF">12 hours</strong>.
+      </p>
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(177,59,255,0.3);border-radius:12px;padding:16px 20px;margin-top:20px">
+        <p style="color:rgba(255,255,255,0.5);font-size:13px;margin:0 0 6px">Your message</p>
+        <p style="color:#fff;line-height:1.6;margin:0;font-style:italic;white-space:pre-line">${message}</p>
+      </div>
+    </div>
+    <div style="background:rgba(0,0,0,0.3);padding:20px;text-align:center">
+      <p style="color:rgba(255,255,255,0.4);margin:0;font-size:12px">© ${new Date().getFullYear()} Sumit Chakraborty Academy</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
   // Send emails in background asynchronously (non-blocking for fast UI response)
-  sendEmail({
-    to: adminEmail,
-    from: `"${name}" <${email}>`,
-    replyTo: email,
-    subject: `[Contact Form] ${subject || 'General Inquiry'} — from ${name}`,
-    html,
-  }).catch((err) => console.error("Async contact admin email send error:", err.message));
+  if (adminEmail) {
+    sendEmail({
+      to: adminEmail,
+      from: `"${name}" <${email}>`,
+      replyTo: email,
+      subject: `[Contact Form] ${subject || 'General Inquiry'} — from ${name}`,
+      html,
+    }).catch((err) => console.error("Async contact admin email send error:", err.message));
+  }
 
   sendEmail({
     to: email,
-    from: `"Sumit Chakraborty Academy" <${adminEmail}>`,
-    replyTo: adminEmail,
+    from: `"Sumit Chakraborty Academy" <${adminEmail || 'support@sumitchakrabortyacademy.com'}>`,
+    replyTo: adminEmail || 'support@sumitchakrabortyacademy.com',
     subject: 'We received your inquiry — Sumit Chakraborty Academy',
     html: confirmHtml,
   }).catch((err) => console.error("Async contact confirmation email send error:", err.message));
