@@ -1,7 +1,141 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Satisfy&family=Outfit:wght@100..900&family=Inter:wght@100..900&display=swap');
 
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  font-family: "Outfit";
+@layer base {
+  :root {
+    color-scheme: dark;
+    --brand-dark: #090040;
+    --brand-violet: #471396;
+    --brand-purple: #B13BFF;
+    --brand-pink: #FF2E93;
+    --brand-surface: #0F0052;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--brand-dark);
+    color: #ffffff;
+    overflow-x: hidden;
+  }
+
+  /* Override Vite template limits */
+  #root {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    border-inline: none !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(20, 12, 92, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(177, 59, 255, 0.15);
+  }
+
+  .glass-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .glass-card-hover:hover {
+    transform: translate3d(0, -5px, 0);
+    border-color: rgba(255, 46, 147, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(177, 59, 255, 0.3);
+    background: rgba(20, 12, 92, 0.6);
+  }
+
+  .glass-nav {
+    background: rgba(9, 0, 64, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(177, 59, 255, 0.1);
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden bg-gradient-to-r from-brand-pink to-brand-purple text-white font-semibold py-2.5 px-6 rounded-xl shadow-lg transition-all duration-300 transform-gpu hover:shadow-brand-purple/20 hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+  }
+
+  .btn-primary:hover::after {
+    @apply opacity-10;
+  }
+
+  .btn-secondary {
+    @apply border border-brand-purple/40 bg-brand-surface/40 text-white hover:bg-brand-purple/10 font-semibold py-2.5 px-6 rounded-xl transition-all duration-300 transform-gpu hover:border-brand-purple hover:scale-105 active:scale-95 flex items-center justify-center gap-2;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-pink via-brand-purple to-blue-400 font-extrabold;
+  }
+
+  .font-signature {
+    font-family: 'Great Vibes', 'Satisfy', cursive;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090040;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #471396;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B13BFF;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Animations */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s infinite ease-in-out;
 }

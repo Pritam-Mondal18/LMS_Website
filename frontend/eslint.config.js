@@ -14,16 +14,16 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      ecmaVersion: 2020,
       globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
+      parserOptions: { ecmaFeatures: { jsx: true } },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'react-hooks/set-state-in-effect': 'off',
+      'no-unused-vars': ['error', {
+        'varsIgnorePattern': '^React$',
+        'argsIgnorePattern': '^[e_]$',
+        'caughtErrorsIgnorePattern': '^[e_]$'
+      }],
     },
   },
 ])

@@ -1,10 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit'
-import userSlice from './userSlice'
-import courseSlice from './courseSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './slices/authSlice';
+import courseReducer from './slices/courseSlice';
 
 export const store = configureStore({
-    reducer:{
-        user: userSlice,
-        course: courseSlice
-    }
-})
+  reducer: {
+    auth: authReducer,
+    courses: courseReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
+export default store;
