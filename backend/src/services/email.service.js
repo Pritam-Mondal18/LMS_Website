@@ -1,12 +1,13 @@
-const nodemailer = require("nodemailer");
+const userEmail = (process.env.USER_EMAIL || "pritammondal18012003@gmail.com").replace(/["'\s]/g, "");
+const userPass = (process.env.USER_PASSWORD || "vvcoxanvkrlcawuj").replace(/["'\s]/g, "");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
-    user: process.env.USER_EMAIL,
-    pass: process.env.USER_PASSWORD,
+    user: userEmail,
+    pass: userPass,
   },
   tls: {
     rejectUnauthorized: false,
@@ -14,21 +15,18 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail = async ({ to, from, replyTo, subject, html }) => {
-  if (!process.env.USER_EMAIL || !process.env.USER_PASSWORD) {
-    console.warn("⚠️ SMTP credentials not configured (USER_EMAIL/USER_PASSWORD missing). Skipping email send.");
-    return false;
-  }
   try {
-    await transporter.sendMail({
-      from: from || `"Sumit Chakraborty Academy" <${process.env.USER_EMAIL}>`,
+    const info = await transporter.sendMail({
+      from: from || `"Sumit Chakraborty Academy" <${userEmail}>`,
       to,
-      replyTo,
+      replyTo: replyTo || userEmail,
       subject,
       html,
     });
+    console.log(`✉️ Email sent successfully to ${to} (Message ID: ${info.messageId})`);
     return true;
   } catch (error) {
-    console.error("Email send error:", error.message);
+    console.error("❌ Email send error:", error.message);
     return false;
   }
 };
