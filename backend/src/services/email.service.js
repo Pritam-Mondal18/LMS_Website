@@ -9,6 +9,10 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail = async ({ to, from, replyTo, subject, html }) => {
+  if (!process.env.USER_EMAIL || !process.env.USER_PASSWORD) {
+    console.warn("⚠️ SMTP credentials not configured (USER_EMAIL/USER_PASSWORD missing). Skipping email send.");
+    return false;
+  }
   try {
     await transporter.sendMail({
       from: from || `"Sumit Chakraborty Academy" <${process.env.USER_EMAIL}>`,

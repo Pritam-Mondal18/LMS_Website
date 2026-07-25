@@ -30,12 +30,14 @@ const register = async (req, res) => {
   const otp = user.generateOTP();
   await user.save();
 
-  // Send OTP email
-  await sendEmail({
+  // Send OTP email in background (non-blocking for fast API response)
+  sendEmail({
     to: email,
     subject: "Verify your Sumit Chakraborty Academy account",
     html: otpEmailTemplate(name, otp),
-  });
+  }).catch((err) => console.error("Async email send error:", err.message));
+
+  console.log(`\n🔑 [OTP DEBUG] OTP for ${email}: ${otp}\n`);
 
   res.status(201).json({
     success: true,
@@ -101,12 +103,12 @@ const verifyOTP = async (req, res) => {
   if (user.role === "teacher") user.isApproved = false; // needs admin approval
   await user.save();
 
-  // Send welcome email
-  await sendEmail({
+  // Send welcome email in background
+  sendEmail({
     to: user.email,
     subject: "Welcome to Sumit Chakraborty Academy! 🎉",
     html: welcomeEmailTemplate(user.name),
-  });
+  }).catch((err) => console.error("Async email send error:", err.message));
 
   sendTokenResponse(user, 200, res, "Account verified successfully!");
 };
@@ -138,11 +140,13 @@ const resendOTP = async (req, res) => {
   user.otpAttempts = 0;
   await user.save();
 
-  await sendEmail({
+  sendEmail({
     to: user.email,
     subject: "New OTP for Sumit Chakraborty Academy",
     html: otpEmailTemplate(user.name, otp),
-  });
+  }).catch((err) => console.error("Async email send error:", err.message));
+
+  console.log(`\n🔑 [OTP DEBUG] New OTP for ${user.email}: ${otp}\n`);
 
   res.json({ success: true, message: "New OTP sent to your email." });
 };
